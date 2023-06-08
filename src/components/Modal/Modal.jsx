@@ -1,41 +1,44 @@
 import { Component } from 'react';
 import { createPortal } from 'react-dom';
-import { Overlay, ModalDiv } from './Modal.styled';
+import PropTypes from 'prop-types';
+import './Modal.css';
 
 const modalRoot = document.querySelector('#modal-root');
 
 export class Modal extends Component {
-  // слухач для кнопок
   componentDidMount() {
-    window.addEventListener('keydown', this.handleClickEsc);
-  }
-  // чистимо за собою після закриття модалки
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleClickEsc);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
-  handleClickEsc = e => {
-    // перевірка клавіші Escape
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = e => {
     if (e.code === 'Escape') {
       this.props.onClose();
     }
   };
 
-  // закриття модалки по кліку на бекдроп
-  handleClickBackdrop = e => {
-    // перевірка чи клік був на бекдроп
+  handleBackDropClick = e => {
     if (e.currentTarget === e.target) {
       this.props.onClose();
     }
   };
 
   render() {
-    const { children } = this.props;
     return createPortal(
-      <Overlay onClick={this.handleClickBackdrop}>
-        <ModalDiv>{children}</ModalDiv>
-      </Overlay>,
+      <div className="Overlay" onClick={this.handleBackDropClick}>
+        <div className="Modal">
+          <img src={this.props.largeImageURL} alt="" />
+        </div>
+      </div>,
       modalRoot
     );
   }
 }
+
+Modal.propTypes = {
+  onClose: PropTypes.func,
+  largeImageUrl: PropTypes.string.isRequired,
+};

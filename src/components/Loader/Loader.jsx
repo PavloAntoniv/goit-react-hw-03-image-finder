@@ -1,18 +1,17 @@
-import { Dna } from 'react-loader-spinner';
+// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import { RotatingLines } from 'react-loader-spinner';
+import './Loader.css';
 
-export const Loader = ({ isLoading }) => {
+export const Loader = () => {
   return (
-    <Dna
-      visible={isLoading}
-      height="80"
-      width="80"
-      ariaLabel="dna-loading"
-      wrapperStyle={{
-        display: 'block',
-        marginTop: '5px',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-      }}
-    />
+    <div className="Loader">
+      <RotatingLines
+        strokeColor="#3f51b590"
+        strokeWidth="5"
+        animationDuration="0.75"
+        width="96"
+        visible={true}
+      />
+    </div>
   );
 };

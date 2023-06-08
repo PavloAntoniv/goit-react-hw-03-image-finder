@@ -1,25 +1,17 @@
+import './ImageGalleryItem.css';
 import PropTypes from 'prop-types';
-import { ImageItem, Img } from './ImageGalleryItem.styled';
 
-export const ImageGalleryItem = ({ item, openModal }) => {
-  const { largeImageURL, tags, webformatURL } = item;
+export const ImageGalleryItem = ({ src, alt, largeImageURL, openModal }) => {
   return (
-    <ImageItem
-      onClick={e => {
-        e.preventDefault();
-        openModal(largeImageURL, tags);
-      }}
-    >
-      <Img src={webformatURL} alt={tags} loading="lazy" />
-    </ImageItem>
+    <li className="ImageGalleryItem" onClick={() => openModal(largeImageURL)}>
+      <img src={src} alt={alt} className="ImageGalleryItem-image" />
+    </li>
   );
 };
 
 ImageGalleryItem.propTypes = {
-  item: PropTypes.shape({
-    tags: PropTypes.string.isRequired,
-    webformatURL: PropTypes.string.isRequired,
-    largeImageURL: PropTypes.string.isRequired,
-  }).isRequired,
-  openModal: PropTypes.func.isRequired,
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  largeImageURL: PropTypes.string,
+  openModal: PropTypes.func,
 };

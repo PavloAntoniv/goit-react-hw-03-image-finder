@@ -1,56 +1,53 @@
-import { Component } from 'react';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
-import { ToastContainer, toast } from 'react-toastify';
-import { Header, Form, Button, Input } from './Searchbar.styled';
-import {
-  notificationMassege,
-  notificationOptions,
-} from '../Notification/Notification';
+import React, { Component } from 'react';
+import { FiSearch } from 'react-icons/fi';
+import './Searchbar.css';
+import PropTypes from 'prop-types';
 
 export class Searchbar extends Component {
   state = {
-    textQuery: '',
+    searchQuery: '',
   };
-  // стежимо за змінами Input (контрольований елемент)
-  onChangeInput = e => {
-    this.setState({ textQuery: e.currentTarget.value.trim().toLowerCase() });
+
+  handleChange = e => {
+    // const { name, value } = e.currentTarget;
+    // this.setState({ [name]: value });
+    this.setState({ searchQuery: e.currentTarget.value.toLowerCase() });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    const { textQuery } = this.state;
-    const { onSubmit } = this.props;
-    // повідомлення
-    if (textQuery === '') {
-      toast.error(`${notificationMassege}`, notificationOptions);
+    if (this.state.searchQuery.trim() === '') {
+      return alert('Please enter something :)');
     }
-    //фун-я onSubmit прийшла з App через пропси
-    onSubmit(textQuery);
-
-    //очистка рядка пошука
-    this.setState({ textQuery: '' });
+    this.props.onSubmit(this.state.searchQuery);
+    this.setState({ searchQuery: '' });
   };
 
   render() {
-    const { textQuery } = this.state;
     return (
-      <Header>
-        <Form onSubmit={this.handleSubmit}>
-          <Button type="submit">
-            <HiMagnifyingGlass size="24" />
-          </Button>
+      <header className="Searchbar">
+        <form onSubmit={this.handleSubmit} className="SearchForm">
+          <button type="submit" className="SearchForm-button">
+            <span>
+              <FiSearch size={25} stroke="#3f51b5" />
+            </span>
+          </button>
 
-          <Input
-            value={textQuery}
-            onChange={this.onChangeInput}
+          <input
+            className="SearchForm-input "
             type="text"
-            autocomplete="off"
+            autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
+            name="searchQuery"
+            value={this.state.searchQuery}
+            onChange={this.handleChange}
           />
-        </Form>
-        <ToastContainer />
-      </Header>
+        </form>
+      </header>
     );
   }
 }
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func,
+};
